@@ -1,6 +1,7 @@
 import json
 import os
 import torch
+import logging
 import random
 import xml.etree.ElementTree as ET
 import torchvision.transforms.functional as FT
@@ -666,18 +667,22 @@ def accuracy(scores, targets, k):
     return correct_total.item() * (100.0 / batch_size)
 
 
-def save_checkpoint(epoch, model, optimizer):
+def save_checkpoint(epoch, model, optimizer, name=None):
     """
     Save model checkpoint.
 
     :param epoch: epoch number
     :param model: model
     :param optimizer: optimizer
+    :param name: save file path
     """
     state = {'epoch': epoch,
              'model': model,
              'optimizer': optimizer}
-    filename = 'checkpoint_ssd300.pth.tar'
+    if name is None:
+        filename = 'snapshots/my_checkpoint.pth.tar'
+    else:
+        filename = name
     torch.save(state, filename)
 
 
@@ -713,3 +718,15 @@ def clip_gradient(optimizer, grad_clip):
         for param in group['params']:
             if param.grad is not None:
                 param.grad.data.clamp_(-grad_clip, grad_clip)
+
+def create_logger(name, log_file, level=logging.INFO):
+    log = logging.getLogger(name)
+    formatter = logging.Formatter('[%(asctime)s][%(filename)10s][line:%(lineno)4d][%(levelname)4s] %(message)s')
+    fh = logging.FileHandler(log_file)
+    fh.setFormatter(formatter)
+    sh = logging.StreamHandler()
+    sh.setFormatter(formatter)
+    log.setLevel(level)
+    log.addHandler(fh)
+    log.addHandler(sh)
+    return log

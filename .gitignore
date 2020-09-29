@@ -1,0 +1,17 @@
+data/*
+log/*
+checkpoints/*
+*.tar
+.idea/*
+__pycache__/*
+operators/__pycache__/*
+pycocotools/*
+dataset/__pycache__/*
+models/__pycache__/*
+detect_script/__pycache__/*
+experiment/RefineDet_coco_001/logs/*
+experiment/RefineDet_coco_001/events/*
+experiment/RefineDet_coco_001/snapshots/*
+experiment/RefineDet_detrac_001/logs/*
+experiment/RefineDet_detrac_001/events/*
+experiment/RefineDet_detrac_001/snapshots/*
